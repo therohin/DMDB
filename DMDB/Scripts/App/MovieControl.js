@@ -1,7 +1,6 @@
 ﻿(function () {
     'use strict';
-
-    /*Write above code here*/
+    
 var movieApp = angular.module('movieApp', []);
 movieApp.controller('movieController', ['$scope', '$http', movieController]);
 
@@ -10,19 +9,18 @@ function movieController($scope, $http) {
     $scope.loading = true; //to show loading image while data is loaded
     $scope.showAddMovieForm = false; //to toggle add movies 
     $scope.showError = false;
+    $scope.sexList = ["Male","Female"]; //initialize select list with values
         
     $http.get('/api/Movie').then(function onSuccess(response) {
-            // Handle success
         $scope.movies = response.data;
         $scope.loading = false;
       }).catch(function onError(response) {
           $scope.error = "An Error has occured while loading movies! :(";
           $scope.showError = true;
           $scope.loading = false;
-         
         });
+
     $http.get('/api/Actor').then(function onSuccess(response) {
-        // Handle success
         $scope.actors = response.data;
         $scope.loading = false;
     }).catch(function onError(response) {
@@ -30,8 +28,8 @@ function movieController($scope, $http) {
         $scope.showError = true;
         $scope.loading = false;
         });
+
     $http.get('/api/Producer').then(function onSuccess(response) {
-        // Handle success
         $scope.producers = response.data;
         $scope.loading = false;
     }).catch(function onError(response) {
@@ -62,28 +60,59 @@ function movieController($scope, $http) {
             $scope.movies.push(response.data);
             $scope.loading = false;
         }).catch(function (response) {
-            $scope.error = "An Error has occured while adding movie! :(" + response.data;
+            $scope.error = "An Error has occured while adding movie! :(";
             $scope.showError = true;
             $scope.loading = false;
         });
 
     };
+    //Insert new Actor
+    $scope.addActor = function () {
+        $scope.loading = true;
+        $http.post('api/Actor/', this.newActor).then(function onSuccess(response) {
+            alert("Added Successfully!!" + response.data.Name);
+            $scope.actors.push(response.data);
+            $scope.loading = false;
+            $scope.hideActorModal();
+        }).catch(function (response) {
+            $scope.error = "An Error has occured while adding actors! :(";
+            $scope.showError = true;
+            $scope.loading = false;
+        });
 
+    };
+    //Insert new Producer
+    $scope.addProducer = function () {
+        $scope.loading = true;
+        $http.post('api/Producer/', this.newProducer).then(function onSuccess(response) {
+            alert("Added Successfully!!" + response.data.Name);
+            $scope.producers.push(response.data);
+            $scope.loading = false;
+            $scope.hideProducerModal();
+        }).catch(function (response) {
+            $scope.error = "An Error has occured while adding producers! :(";
+            $scope.showError = true;
+            $scope.loading = false;
+        });
+
+    };
+    //Save existing movie
     $scope.save = function () {
         $scope.loading = true;
         var mov = this.movie;
+        mov.ProducerId = mov.Producer.ProducerId;
         debugger;
         $http.put('api/Movie/' + mov.MovieId, mov).then(function () {
             mov.enableEdit = false;
             $scope.loading = false;
             alert("Saved Successfully!!");
         }).catch(function (data) {
-            $scope.error = "An Error has occured while saving movie! :(" + data;
+            $scope.error = "An Error has occured while saving movie! :(";
             $scope.showError = true;
             $scope.loading = false;
             })
     };
-
+    //Delete existing movie
     $scope.deleteMovie = function () {
         $scope.loading = true;
         var deletedMovie = this.movie;
@@ -95,7 +124,7 @@ function movieController($scope, $http) {
             $scope.movies.splice(index, 1);
             $scope.loading = false;
         }).catch(function (data) {
-            $scope.error = "An Error has occured while deleting movie! :(" + data;
+            $scope.error = "An Error has occured while deleting movie! :(";
             $scope.showError = true;
             $scope.loading = false;
         });
@@ -122,39 +151,13 @@ function movieController($scope, $http) {
                 });
             };
         }
-
     };
-
-    //Insert new Actor
-    $scope.addActor = function () {
-        $scope.loading = true;
-        $http.post('api/Actor/', this.newActor).then(function onSuccess(response) {
-            alert("Added Successfully!!" + response.data.Name);
-            $scope.actors.push(response.data);
-            $scope.loading = false;
-        }).catch(function (response) {
-            $scope.error = "An Error has occured while adding actors! :(" + response.data;
-            $scope.showError = true;
-            $scope.loading = false;
-        });
-
-    };
-    $scope.addProducer = function () {
-        $scope.loading = true;
-        $http.post('api/Producer/', this.newProducer).then(function onSuccess(response) {
-            alert("Added Successfully!!" + response.data.Name);
-            $scope.producers.push(response.data);
-            $scope.loading = false;
-        }).catch(function (response) {
-            $scope.error = "An Error has occured while adding producers! :(" + response.data;
-            $scope.showError = true;
-            $scope.loading = false;
-        });
-
-    };
+    $scope.hideProducerModal = function () {
+        $('#addProducerModal').modal('hide'); 
+    }
+    $scope.hideActorModal = function () {
+        $('#addActorModal').modal('hide');
+    }
 };
-
-
-   
 
 })();
