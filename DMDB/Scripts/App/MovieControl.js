@@ -13,7 +13,6 @@ function movieController($scope, $http) {
     $http.get('/api/Movie').then(function onSuccess(response) {
             // Handle success
         $scope.movies = response.data;
-        debugger; 
         $scope.loading = false;
       }).catch(function onError(response) {
           $scope.error = "An Error has occured while loading movies! :(";
@@ -52,10 +51,8 @@ function movieController($scope, $http) {
     //Insert new movie
     $scope.add = function () {
         $scope.loading = true;
-        debugger;
         $http.post('api/Movie/', this.newMovie).then(function onSuccess(response) {
             alert("Added Successfully!!");
-            debugger;
             $scope.showAddMovieForm = false;
             $scope.movies.push(response.data);
             $scope.loading = false;
@@ -78,10 +75,13 @@ function movieController($scope, $http) {
             })
     };
 
-    $scope.delete = function (index) {
+    $scope.deleteMovie = function () {
         $scope.loading = true;
-        var Id = this.movie.movieId;
-        $http.delete('/api/Movie/' + Id).then(function (data) {
+        var deletedMovie = this.movie;
+        var Id = this.movie.MovieId;
+        $http.delete('/api/Movie/' + Id).then(function (response) {
+            
+            var index = $scope.movies.indexOf(deletedMovie);
             alert("Movie deleted successfully!!");
             $scope.movies.splice(index, 1);
             $scope.loading = false;

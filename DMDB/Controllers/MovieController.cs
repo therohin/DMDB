@@ -55,13 +55,13 @@ namespace DMDB.Controllers
         }
 
         // PUT api/<controller>/5
-        public HttpResponseMessage Put(int movieId, Movie movie)
+        public HttpResponseMessage Put(int id, Movie movie)
         {
             if (!ModelState.IsValid)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
             }
-            if (movieId != movie.MovieId)
+            if (id != movie.MovieId)
             {
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
@@ -79,9 +79,9 @@ namespace DMDB.Controllers
         }
 
         // DELETE api/<controller>/5
-        public HttpResponseMessage Delete(int movieId)
+        public HttpResponseMessage Delete(int id)
         {
-            Movie movie = _db.Movies.Find(movieId);
+            Movie movie = _db.Movies.Find(id);
             if (movie == null)
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
