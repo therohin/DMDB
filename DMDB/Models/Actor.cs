@@ -12,7 +12,8 @@ namespace DMDB.Models
     using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Actor
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,7 +23,10 @@ namespace DMDB.Models
         }
     
         public int ActorId { get; set; }
+        [Required]
+        [RegularExpression("[a-zA-Z ]*$")]
         public string Name { get; set; }
+        [Required]
         public string Sex { get; set; }
         public Nullable<System.DateTime> DOB { get; set; }
         public string Bio { get; set; }

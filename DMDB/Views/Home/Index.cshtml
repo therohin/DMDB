@@ -2,76 +2,11 @@
     ViewBag.Title = "RMDB - Home Page";
 }
 
-<div data-ng-controller="movieController" class="container">
+<div data-ng-controller="movieController">
     <div class="row">
         <div class="col-md-12">
-            <strong class="alert alert-danger">{{error}}</strong>
+            <strong data-ng-show="showError" dclass="alert alert-danger">{{error}}</strong>
             <p data-ng-hide="showAddMovieForm"><a data-ng-click="toggleAdd()" href="javascript:;" class="btn btn-primary">Add New Movie</a></p>
-            <form name="addMovie" data-ng-show="showAddMovieForm" class="form-horizontal" novalidate>
-                <div class="form-group">
-                    <label for="moviename" class="col-sm-2 control-label">Name:</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="moviename" placeholder="Movie Name" data-ng-model="newMovie.Name" required/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="yearofrelease" class="col-sm-2 control-label">Year Of Release:</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="yearofrelease" placeholder="YYYY" data-ng-model="newMovie.YearOfRelease" required />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="plot" class="col-sm-2 control-label">Plot</label>
-                    <div class="col-sm-10">
-                        <textarea  rows="4"cols="30" class="form-control" id="plot" placeholder="Movie Plot" data-ng-model="newMovie.Plot" ></textarea>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="poster" class="col-sm-2 control-label">Poster</label>
-                    <div class="col-sm-10">
-                        <input type="file" class="form-control" id="poster" onchange="angular.element(this).scope().file_changed(this)"/>
-                        <img data-ng-src="{{poster}}"  class="img-thumbnail img-responsive" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="actors" class="col-sm-2 control-label">Actors:</label>
-                    <div class="col-sm-10">
-                        <select data-ng-options="actor as actor.Name for actor in actors track by actor.ActorId" class="form-control" id="actors" placeholder="Actors" data-ng-model="newMovie.Actors" multiple required>
-                            <option value="" selected>Select</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="addActor" class="col-sm-offset-2 col-sm-10">Couldn't find producer you want to add? Add a new one here:</label>
-                    <div class="col-sm-offset-2 col-sm-8">
-                        <input type="button" id="addActor" value ="Add Actor" class="btn btn-primary" data-toggle="modal" data-target="#addActorModal" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="producer" class="col-sm-2 control-label">Producer Name:</label>
-                    <div class="col-sm-10">
-                        <select data-ng-options="producer as producer.Name for producer in producers track by producer.producerId" class="form-control" id="producer" placeholder="Producer Name" data-ng-model="newMovie.Producer" required >
-                            <option value="" selected>Select</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="addProducer" class="col-sm-offset-2 col-sm-10">Couldn't find producer you want to add? Add a new one here:</label>
-                    <div class="col-sm-offset-2 col-sm-8">
-                        <input type="button" id="addProducer" value ="Add Producer" class="btn btn-primary" data-toggle="modal" data-target="#addProducerModal" />
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <input type="submit" value="Add" data-ng-click="add()" data-ng-disabled="addMovie.$invalid" class="btn btn-primary"/>
-                        <input type="button" value="Cancel" data-ng-click="toggleAdd()" class="btn btn-primary"/>
-                    </div>
-                </div>
-                <br/>
-            </form>
         </div>
     </div>
     <!--Div for Add Actor Dialog Box-->
@@ -86,9 +21,8 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover" style="width:800px">
+        <div class="table-responsive col-md-12 col-lg-12">
+                <table class="table table-bordered table-hover">
                     <tr>
                         <th>#</th>
                         <th>Movie Name</th>
@@ -99,50 +33,134 @@
                         <th>Producer</th>
                         <th>Actions</th>
                     </tr>
-                    <tr data-ng-repeat="movie in movies">
+                        <tr ng-form name="addMovie" data-ng-show="showAddMovieForm" class="form-horizontal" novalidate>
+                            <td></td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" id="moviename" placeholder="Movie Name" data-ng-model="newMovie.Name" required />
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="col-md-10">
+                                        <select data-ng-options="actor as actor.Name for actor in actors track by actor.ActorId" class="form-control" id="actors" placeholder="Actors" data-ng-model="newMovie.Actors" multiple required>
+                                            <option value="" selected>Select</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-10">
+                                        <input type="button" id="addActor" value="Add Actor" class="btn btn-primary" data-toggle="modal" data-target="#addActorModal" />
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="col-md-10">
+                                        <input type="number" min="1900" max="2050" class="form-control" id="yearofrelease" placeholder="YYYY" data-ng-model="newMovie.YearOfRelease" required />
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="col-md-10">
+                                        <textarea rows="4" cols="30" class="form-control" id="plot" placeholder="Movie Plot" data-ng-model="newMovie.Plot"></textarea>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="col-md-10">
+                                        <input type="file" class="form-control" id="poster" onchange="angular.element(this).scope().file_changed(this)" />
+                                        <img data-ng-src="{{poster}}" class="img-thumbnail img-responsive poster" />
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="col-md-10">
+                                        <select data-ng-options="producer as producer.Name for producer in producers track by producer.producerId" class="form-control" id="producer" placeholder="Producer" data-ng-model="newMovie.Producer" required>
+                                            <option value="" selected>Select</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-10">
+                                        <input type="button" id="addProducer" value="Add Producer" class="btn btn-primary" data-toggle="modal" data-target="#addProducerModal" />
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="col-md-10" >
+                                        <input type="submit" value="Add" data-ng-click="add()" data-ng-disabled="addMovie.$invalid" class="btn btn-primary" />
+                                        <input type="button" value="Cancel" data-ng-click="toggleAdd()" class="btn" />
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    
+                    <tr data-ng-repeat="movie in movies" ng-form name="editMovie">
                         <td>
-                            <strong data-ng-hide="movie.enableEdit">{{movie.MovieId}}</strong>
+                            <strong >{{movie.MovieId}}</strong>
                         </td>
                         <td>
                             <p data-ng-hide="movie.enableEdit">{{movie.Name}}</p>
-                            <input type="text" data-ng-show="movie.enableEdit" data-ng-model="movie.Name"/> 
+                            <div class="form-group">
+                                <input type="text" class="form-control" data-ng-show="movie.enableEdit" data-ng-model="movie.Name" required/>
+                            </div>
                         </td>
                         <td>
                             <p data-ng-hide="movie.enableEdit">{{getActors(movie.Actors)}}</p>
-                            <input type="text" data-ng-show="movie.enableEdit" data-ng-model="movie.Actors" />
+                            <div class="form-group">
+                                <select class="form-control" data-ng-show="movie.enableEdit" data-ng-options="actor as actor.Name for actor in actors track by actor.ActorId" placeholder="Actors" data-ng-model="movie.Actors" multiple required></select>
+                                </div>
                         </td>
                         <td>
                             <p data-ng-hide="movie.enableEdit">{{movie.YearOfRelease}}</p>
-                            <input type="text" data-ng-show="movie.enableEdit" data-ng-model="movie.YearOfRelease" />
+                            <div class="form-group">
+                            <input class="form-control" type="number" min="1900" max="2050" data-ng-show="movie.enableEdit" data-ng-model="movie.YearOfRelease" required/>
+                            </div>
                         </td>
                         <td>
                             <p data-ng-hide="movie.enableEdit">{{movie.Plot}}</p>
-                            <input type="text" data-ng-show="movie.enableEdit" data-ng-model="movie.Plot" />
+                            <div class="form-group">
+                            <textarea rows="4" cols="30" class="form-control" data-ng-show="movie.enableEdit" data-ng-model="movie.Plot"></textarea>
+                            </div>
                         </td>      
                         <td>
-                            <img data-ng-src="{{movie.Poster}}" class="img-thumbnail img-responsive" />
-                            <input type="image" data-ng-show="movie.enableEdit" data-ng-model="movie.Poster" />
+                            <img data-ng-src="{{movie.Poster}}" class="img-thumbnail img-responsive poster" />
+                            <div class="form-group">
+                            <input type="file" class="form-control" data-ng-show="movie.enableEdit" id="editMoviePoster" onchange="angular.element(this).scope().file_changed(this)" />
+                            </div>
                         </td>
                         <td>
                             <p data-ng-hide="movie.enableEdit">{{movie.Producer.Name}}</p>
-                            <input type="text" data-ng-show="movie.enableEdit" data-ng-model="movie.Producer" />
+                            <div class="form-group">
+                            <select class="form-control" data-ng-show="movie.enableEdit" data-ng-options="producer as producer.Name for producer in producers track by producer.producerId" data-ng-model="movie.Producer" required>
+                            </select>
+                            </div>
                         </td>
                         <td>
                             <p data-ng-hide="movie.enableEdit">
                                 <a data-ng-click="toggleEdit(movie)" href="javascript:;">Edit</a> | <a data-ng-click="deleteMovie()" href="javascript:;">Delete</a>
                             </p>
-                            <p data-ng-show="movie.enableEdit">
-                                <a data-ng-click="save(movie)" href="javascript:;">Save</a> | <a data-ng-click="toggleEdit(movie)" href="javascript:;">Cancel</a>
-                            </p>
+                                <div class="form-group" data-ng-show="movie.enableEdit">
+                                <!--a data-ng-click="save(movie)" data-ng-disabled="editMovie.$invalid" href="javascript:;">Save</!--a> -->
+                                <input type="submit" value="Save" data-ng-click="save(movie)"  data-ng-disabled="editMovie.$invalid" class="btn btn-primary" />
+                                <button data-ng-click="toggleEdit(movie)" class="btn">Cancel</button>
+                                </div>
+                            
                         </td>
                     </tr>
                 </table>
                 <hr/>
-            </div>
         </div>
     </div>
     <div id="loadingImg" data-ng-show="loading">
-        <img src="Images/ajax-loader.gif" class="ajax-loader" />
+        <img src="~/Content/images/ajax-loader.gif" class="ajax-loader" />
     </div>
        
 </div>

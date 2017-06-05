@@ -9,13 +9,15 @@ function movieController($scope, $http) {
     //user defined variables in $scope(model) for CRUD operations
     $scope.loading = true; //to show loading image while data is loaded
     $scope.showAddMovieForm = false; //to toggle add movies 
-    
+    $scope.showError = false;
+        
     $http.get('/api/Movie').then(function onSuccess(response) {
             // Handle success
         $scope.movies = response.data;
         $scope.loading = false;
       }).catch(function onError(response) {
           $scope.error = "An Error has occured while loading movies! :(";
+          $scope.showError = true;
           $scope.loading = false;
          
         });
@@ -25,6 +27,7 @@ function movieController($scope, $http) {
         $scope.loading = false;
     }).catch(function onError(response) {
         $scope.error = "An Error has occured while loading actors data! :(";
+        $scope.showError = true;
         $scope.loading = false;
         });
     $http.get('/api/Producer').then(function onSuccess(response) {
@@ -33,6 +36,7 @@ function movieController($scope, $http) {
         $scope.loading = false;
     }).catch(function onError(response) {
         $scope.error = "An Error has occured while loading producers data! :(";
+        $scope.showError = true;
         $scope.loading = false;
     });
    
@@ -51,6 +55,7 @@ function movieController($scope, $http) {
     //Insert new movie
     $scope.add = function () {
         $scope.loading = true;
+        this.newMovie.Poster = $scope.poster;
         $http.post('api/Movie/', this.newMovie).then(function onSuccess(response) {
             alert("Added Successfully!!");
             $scope.showAddMovieForm = false;
@@ -58,6 +63,7 @@ function movieController($scope, $http) {
             $scope.loading = false;
         }).catch(function (response) {
             $scope.error = "An Error has occured while adding movie! :(" + response.data;
+            $scope.showError = true;
             $scope.loading = false;
         });
 
@@ -66,11 +72,14 @@ function movieController($scope, $http) {
     $scope.save = function () {
         $scope.loading = true;
         var mov = this.movie;
-        $http.put('api/Movie/' + mov.movieId, mov).then(function () {
+        debugger;
+        $http.put('api/Movie/' + mov.MovieId, mov).then(function () {
             mov.enableEdit = false;
             $scope.loading = false;
+            alert("Saved Successfully!!");
         }).catch(function (data) {
             $scope.error = "An Error has occured while saving movie! :(" + data;
+            $scope.showError = true;
             $scope.loading = false;
             })
     };
@@ -87,12 +96,13 @@ function movieController($scope, $http) {
             $scope.loading = false;
         }).catch(function (data) {
             $scope.error = "An Error has occured while deleting movie! :(" + data;
+            $scope.showError = true;
             $scope.loading = false;
         });
     };
 
     $scope.file_changed = function (element) {
-
+        var updatedMovie = this.movie;
         var photofile = element.files[0];
         if (photofile) {
             var reader = new FileReader();
@@ -100,8 +110,15 @@ function movieController($scope, $http) {
             reader.onload = function (e) {
                 // browser completed reading file - display it
                 $scope.$apply(function () {
-                    $scope.poster = e.target.result;
-                    $scope.newMovie.Poster = e.target.result;
+                    var index = $scope.movies.indexOf(updatedMovie);
+                    var d = $(element).attr('id');
+                    if (d == "editMoviePoster") {
+                        $scope.movies[index].Poster = e.target.result;
+                    }
+                    else
+                    {
+                        $scope.poster = e.target.result;
+                    }
                 });
             };
         }
@@ -117,6 +134,7 @@ function movieController($scope, $http) {
             $scope.loading = false;
         }).catch(function (response) {
             $scope.error = "An Error has occured while adding actors! :(" + response.data;
+            $scope.showError = true;
             $scope.loading = false;
         });
 
@@ -129,6 +147,7 @@ function movieController($scope, $http) {
             $scope.loading = false;
         }).catch(function (response) {
             $scope.error = "An Error has occured while adding producers! :(" + response.data;
+            $scope.showError = true;
             $scope.loading = false;
         });
 

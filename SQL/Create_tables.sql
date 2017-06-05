@@ -1,5 +1,3 @@
-[JsonIgnore]
-
 CREATE TABLE [dbo].[Actor] (
     [ActorId] INT      IDENTITY(1,1)      NOT NULL,
     [Name]     NVARCHAR (50)  NOT NULL,
@@ -34,6 +32,6 @@ CREATE TABLE [dbo].[MovieActors] (
     [MovieId] INT NOT NULL,
     [ActorId] INT NOT NULL,
     CONSTRAINT [PK_MovieActor] PRIMARY KEY CLUSTERED ([MovieId] ASC, [ActorId] ASC),
-    CONSTRAINT [FK_Movie_MovieActors] FOREIGN KEY ([MovieId]) REFERENCES [dbo].[Movie] ([MovieId]),
+    CONSTRAINT [FK_Movie_MovieActors] FOREIGN KEY ([MovieId]) REFERENCES [dbo].[Movie] ([MovieId]) ON DELETE CASCADE,
     CONSTRAINT [FK_Actor_MovieActors] FOREIGN KEY ([ActorId]) REFERENCES [dbo].[Actor] ([ActorId])
 );

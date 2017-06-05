@@ -11,7 +11,8 @@ namespace DMDB.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Movie
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -19,16 +20,19 @@ namespace DMDB.Models
         {
             this.Actors = new HashSet<Actor>();
         }
-    
         public int MovieId { get; set; }
+        [Required]
         public string Name { get; set; }
+        [Required]
+        [Range(1900,2050)]
         public Nullable<short> YearOfRelease { get; set; }
         public string Plot { get; set; }
         public string Poster { get; set; }
         public Nullable<int> ProducerId { get; set; }
-    
+        [Required]   
         public virtual Producer Producer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [Required]
         public virtual ICollection<Actor> Actors { get; set; }
     }
 }

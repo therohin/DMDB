@@ -22,3 +22,11 @@ select,
 textarea {
     max-width: 280px;
 }
+.poster {
+    width: 230px;
+    height: 230px;
+}
+
+.ui-datepicker-calendar, .ui-datepicker-month {
+    display: none;
+}

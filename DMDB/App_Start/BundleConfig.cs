@@ -26,6 +26,7 @@ namespace DMDB
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/themes/base/jquery-ui.min.css",
                       "~/Content/site.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/angularjs").Include(
