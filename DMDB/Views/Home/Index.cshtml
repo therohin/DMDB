@@ -143,7 +143,7 @@
                         <td>
                             <p data-ng-hide="movie.enableEdit">{{movie.Producer.Name}}</p>
                             <div class="form-group">
-                                <select class="form-control" data-ng-show="movie.enableEdit" data-ng-options="producer as producer.Name for producer in producers track by producer.producerId" data-ng-model="movie.Producer" required>
+                                <select class="form-control" data-ng-show="movie.enableEdit" data-ng-options="producer as producer.Name for producer in producers track by producer.ProducerId" data-ng-model="movie.Producer" required>
                                 </select>
                             </div>
                             <div class="form-group" data-ng-show="movie.enableEdit">
